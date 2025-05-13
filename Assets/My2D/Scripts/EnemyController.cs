@@ -20,7 +20,9 @@ namespace My2D
         private TouchingDirection touchingDirection;
         public Animator animator;
         public DetectionZone detectionZone; //플레이어 감지
+        public DetectionZone cliffDetection; //낭떠러지 감지
         private Damageable damageable;
+
 
         //이동 속도
         [SerializeField] private float walkSpeed = 4f;
@@ -117,6 +119,8 @@ namespace My2D
             damageable = this.GetComponent<Damageable>();
             //델리게이트 함수 등록
             damageable.hitAction += OnHit;
+
+            cliffDetection.noColliderRemain += Flip;
         }
 
         private void Update()

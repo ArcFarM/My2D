@@ -85,6 +85,12 @@ namespace My2D
                 animator.SetBool(AnimationString.lockVelocity, value);
             }
         }
+
+        public bool isFullHealth {
+            get {
+                return currentHealth >= maxHealth;
+            }
+        }
         #endregion
 
         #region Unity Event Method
@@ -138,8 +144,19 @@ namespace My2D
                 hitAction.Invoke(damage, knockback);
             }*/
             hitAction?.Invoke(damage, knockback);
-
+            CharacterEvents.CharTakeDmg?.Invoke(this.gameObject, damage);
             return true;
+        }
+
+        //체력 회복
+        public void Heal(float healAmount) {
+            if (IsDeath || isFullHealth) {
+                return;
+            }
+            CurrentHealth += healAmount;
+            if (isFullHealth) {
+                CurrentHealth = MaxHealth;
+            }
         }
 
         private void Die()
