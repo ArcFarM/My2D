@@ -23,7 +23,9 @@ namespace My2D {
         }
         private void OnTriggerEnter2D(Collider2D other) {
             //아이템을 캐릭터가 먹었을 때
-            Damageable d = other.gameObject.TryGetComponent<Damageable>(out d) ? d : null;
+            Debug.Log("Heal Item Get");
+            Damageable d = other.gameObject.TryGetComponent<Damageable>(out d) ? 
+                other.gameObject.GetComponent<Damageable>() : null;
             if (d != null && !d.isFullHealth) { 
                 d.Heal(healAmount);
                 healSound.Play();

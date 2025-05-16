@@ -38,6 +38,9 @@ namespace My2D
 
         //점프키를 눌렀을때 위로 올라가는 속도값
         [SerializeField] private float jumpForce = 5f;
+
+        //화살 프리팹
+        [SerializeField] private GameObject arrowPrefab;
         #endregion
 
         #region Property
@@ -232,6 +235,23 @@ namespace My2D
         public void OnHit(float damage, Vector2 knockback)
         {
             rb2D.linearVelocity = new Vector2(knockback.x, rb2D.linearVelocityY + knockback.y);
+        }
+
+        public void OnRangeAttack(InputAction.CallbackContext context) {
+            //땅을 밟고 있는 상태에서 눌렀다면 원거리 공격 애니메이션 호출
+            if (context.started && touchingDirection.IsGround) {
+                animator.SetTrigger(AnimationString.rangeattack);
+            }
+            //화살 프리팹 소환, 바라보는 방향에 맞춰서
+            /*Vector2 arrowSpawn = Vector2.zero;
+            if (IsFacingRight) {
+                arrowSpawn = transform.position + new Vector3(2f, 0f, 0f);
+            }
+            else arrowSpawn = transform.position + new Vector3(-2f, 0f, 0f);
+
+            GameObject arrow = Instantiate(arrowPrefab, arrowSpawn, Quaternion.identity);
+            //화살 방향 설정
+            if (!IsFacingRight) arrow.transform.localScale = new Vector3(-1, 1, 1);*/
         }
         #endregion
 

@@ -13,6 +13,13 @@ namespace My2D {
         Color textColor;
         #endregion
 
+        #region Property
+        public Color GetSetColor{
+            get => textColor;
+            set => textColor = value;         
+        }
+        #endregion
+
         #region Unity Event Methods
         private void Awake() {
             textRect = GetComponent<RectTransform>();

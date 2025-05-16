@@ -128,7 +128,7 @@ namespace My2D
             }
 
             CurrentHealth -= damage;
-            Debug.Log($"CurrentHealth : {CurrentHealth}");
+            //Debug.Log($"CurrentHealth : {CurrentHealth}");
 
             //무적 모드 셋팅 - 타이머 초기화
             isInvincible = true;
@@ -139,10 +139,6 @@ namespace My2D
             LockVelocity = true;
 
             //델리게이트 함수에 등록된 함수들 호출            
-            /*if(hitAction != null)
-            {
-                hitAction.Invoke(damage, knockback);
-            }*/
             hitAction?.Invoke(damage, knockback);
             CharacterEvents.CharTakeDmg?.Invoke(this.gameObject, damage);
             return true;
@@ -153,10 +149,9 @@ namespace My2D
             if (IsDeath || isFullHealth) {
                 return;
             }
-            CurrentHealth += healAmount;
-            if (isFullHealth) {
-                CurrentHealth = MaxHealth;
-            }
+            //Debug.Log($"Before Heal CurrentHealth : {CurrentHealth}");
+            healAmount = Mathf.Min(healAmount, MaxHealth - CurrentHealth);
+            CharacterEvents.CharHeal?.Invoke(gameObject, healAmount);
         }
 
         private void Die()

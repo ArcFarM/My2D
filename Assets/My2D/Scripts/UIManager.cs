@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 
 namespace My2D {
@@ -7,6 +8,7 @@ namespace My2D {
         #region Variables
         //피격 시/체력 회복 시 텍스트 프리팹
         [SerializeField] GameObject dmgPrefab;
+
         //프리팹 출력할 캔버스
         [SerializeField] Canvas canvas;
         //카메라 위치
@@ -22,10 +24,12 @@ namespace My2D {
         }
         private void OnEnable() {
             CharacterEvents.CharTakeDmg += CharDmg;
+            CharacterEvents.CharHeal += CharHeal;
         }
 
         private void OnDisable() {
             CharacterEvents.CharTakeDmg -= CharDmg;
+            CharacterEvents.CharHeal -= CharHeal;
         }
         #endregion
 
@@ -38,6 +42,17 @@ namespace My2D {
             createdDmg.transform.SetParent(canvas.transform);
             //텍스트 수정
             createdDmg.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = dmg.ToString();
+        }
+        public void CharHeal(GameObject character, float heal) {
+            //받은 회복량 표시하는 텍스트 프리팹 생성
+            Vector3 spawnPos = camera.WorldToScreenPoint(character.transform.position);
+            GameObject createdHeal = Instantiate(dmgPrefab, spawnPos + offset, Quaternion.identity);
+            //피해량 텍스트 프리팹에서 색상만 변경하기
+            createdHeal.GetComponent<HealDamageDisplay>().GetSetColor = Color.green;
+            //텍스트 프리팹을 캔버스의 자식으로 설정
+            createdHeal.transform.SetParent(canvas.transform);
+            //텍스트 수정
+            createdHeal.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = heal.ToString();
         }
         #endregion
     }
